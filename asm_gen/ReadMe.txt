@@ -1,4 +1,5 @@
-﻿def reg
+﻿;gplex gppg
+def reg
 def gp8x32 is reg
 def gp16x32 is reg
 
