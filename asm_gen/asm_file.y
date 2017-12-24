@@ -1,6 +1,7 @@
 ﻿%namespace AsmGen
 %using System.IO;
 %output=parser.cs
+%YYSTYPE object.create($$)
 %token Def Is Rule Operator Code Target Not And Or Imm ImmValue LBracket RBracket LSBracket RSBracket LCBracket RCBracket Add Sub Mul Colon Comma NewLine Id
 %%
 code_block
@@ -9,7 +10,7 @@ code_block
 	;
 non_empty_block
     : code_line
-	| non_empty_block new_lines code_line
+	| non_empty_block new_lines code_line         {Console.Output($1);}
 	;
 code_line
     : function_definition
@@ -41,7 +42,7 @@ function_input_p3
 	| LSBracket function_input_p1 RSBracket
 	;
 function_definition
-    : group_list Id LBracket parameters RBracket Id LCBracket new_lines code_block RCBracket
+    : group_list Id LBracket parameters RBracket Id LCBracket new_lines code_block RCBracket   $$ = CreateObject(typeof(FunctionSignature), $2, );
     | group_list Id LBracket parameters RBracket LCBracket new_lines code_block RCBracket
 	;
 group_list
@@ -96,3 +97,15 @@ new_lines
 	;
 %%
 public Parser(Stream file) : base(new Scanner(file)) { }
+
+static object CreateObject(Type objectType, params object[] parameters)
+{
+    ConstructorInfo constructor = objectType.GetConstructor(parameters.Select(p => p.GetType()).ToArray());
+    return constructor.Invoke(parameters);
+}
+
+static object ToArray<T>(object source)
+{
+    IEnumerable<T> isource = (IEnumerable<T>)source;
+    return isource.ToArray();
+}
