@@ -1,2 +1,2 @@
-gppg /gplex asm_file.y
+gppg /gplex /report asm_file.y
 gplex asm_file.lex

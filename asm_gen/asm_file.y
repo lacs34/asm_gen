@@ -13,11 +13,11 @@ non_empty_block
 	| non_empty_block new_lines code_line         {Console.Output($1);}
 	;
 code_line
-    : function_definition
-	| function_invokation
-	| rule_definitioin
-	| group_definitioin
-	| target_definitioin
+    : function_definition                                        $$ = $1;
+	| function_invokation                                        $$ = $1;
+	| rule_definitioin                                           $$ = $1;
+	| group_definitioin                                          $$ = $1;
+	| target_definitioin                                         $$ = $1;
 	;
 function_invokation
     : Id function_input_list
