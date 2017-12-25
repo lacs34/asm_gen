@@ -3,12 +3,12 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.5.2
-// Machine:  DESKTOP-5ML6DFM
-// DateTime: 2017/12/24 17:12:01
-// UserName: lt
-// Input file <asm_file.y - 2017/12/24 17:11:52>
+// Machine:  DESKTOP-OHVUTMD
+// DateTime: 12/25/2017 19:42:01
+// UserName: OptaneTester
+// Input file <asm_file.y - 12/25/2017 19:41:55>
 
-// options: lines gplex
+// options: lines report gplex
 
 using System;
 using System.Collections.Generic;
@@ -17,6 +17,9 @@ using System.Globalization;
 using System.Text;
 using QUT.Gppg;
 using System.IO;
+using System.Reflection;
+using System.Linq;
+using AsmGen;
 
 namespace AsmGen
 {
@@ -51,98 +54,118 @@ public class Parser: ShiftReduceParser<object, LexLocation>
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;
 #pragma warning restore 649
-  private static Rule[] rules = new Rule[49];
-  private static State[] states = new State[81];
+  private static Rule[] rules = new Rule[51];
+  private static State[] states = new State[101];
   private static string[] nonTerms = new string[] {
       "code_block", "$accept", "non_empty_block", "code_line", "new_lines", "function_definition", 
       "function_invokation", "rule_definitioin", "group_definitioin", "target_definitioin", 
       "function_input_list", "function_input_p1", "function_input_p2", "function_input_p3", 
-      "group_list", "parameters", "non_empty_group_list", "non_empty_parameters", 
+      "parameters", "group_list", "non_empty_group_list", "non_empty_parameters", 
       "rule_element_list_p1", "rule_element_list_p2", "rule_element_list_p3", 
       "definitioin", "type_list", };
 
   static Parser() {
-    states[0] = new State(new int[]{27,20,6,40,4,59,9,68,3,-2},new int[]{-1,1,-3,3,-4,17,-6,6,-15,7,-17,18,-7,38,-8,39,-9,58,-10,67});
+    states[0] = new State(new int[]{4,7,9,19,27,31,6,50,3,-2},new int[]{-1,1,-3,3,-4,18,-6,6,-7,30,-8,49,-9,65,-10,66});
     states[1] = new State(new int[]{3,2});
     states[2] = new State(-1);
-    states[3] = new State(new int[]{26,56,3,-3,20,-3},new int[]{-5,4});
-    states[4] = new State(new int[]{27,20,6,40,4,59,9,68},new int[]{-4,5,-6,6,-15,7,-17,18,-7,38,-8,39,-9,58,-10,67});
+    states[3] = new State(new int[]{26,67,3,-3,20,-3},new int[]{-5,4});
+    states[4] = new State(new int[]{4,7,9,19,27,31,6,50},new int[]{-4,5,-6,6,-7,30,-8,49,-9,65,-10,66});
     states[5] = new State(-5);
     states[6] = new State(-6);
-    states[7] = new State(new int[]{27,8});
-    states[8] = new State(new int[]{15,9});
-    states[9] = new State(new int[]{27,79,16,-29},new int[]{-16,10,-18,75});
-    states[10] = new State(new int[]{16,11});
-    states[11] = new State(new int[]{27,12,19,71});
-    states[12] = new State(new int[]{19,13});
-    states[13] = new State(new int[]{26,56},new int[]{-5,14});
-    states[14] = new State(new int[]{27,20,6,40,4,59,9,68,20,-2},new int[]{-1,15,-3,3,-4,17,-6,6,-15,7,-17,18,-7,38,-8,39,-9,58,-10,67});
-    states[15] = new State(new int[]{20,16});
-    states[16] = new State(-23);
-    states[17] = new State(-4);
-    states[18] = new State(new int[]{27,19});
-    states[19] = new State(-28);
-    states[20] = new State(new int[]{27,27,14,28,17,29,26,-12,3,-12,20,-12},new int[]{-11,21,-12,22,-13,35,-14,34});
-    states[21] = new State(-11);
-    states[22] = new State(new int[]{21,23,22,32,25,36,26,-13,3,-13,20,-13});
-    states[23] = new State(new int[]{27,27,14,28,17,29},new int[]{-13,24,-14,34});
-    states[24] = new State(new int[]{23,25,21,-16,22,-16,25,-16,26,-16,3,-16,20,-16,18,-16});
-    states[25] = new State(new int[]{27,27,14,28,17,29},new int[]{-14,26});
-    states[26] = new State(-19);
-    states[27] = new State(-20);
-    states[28] = new State(-21);
-    states[29] = new State(new int[]{27,27,14,28,17,29},new int[]{-12,30,-13,35,-14,34});
-    states[30] = new State(new int[]{18,31,21,23,22,32});
-    states[31] = new State(-22);
-    states[32] = new State(new int[]{27,27,14,28,17,29},new int[]{-13,33,-14,34});
-    states[33] = new State(new int[]{23,25,21,-17,22,-17,25,-17,26,-17,3,-17,20,-17,18,-17});
-    states[34] = new State(-18);
-    states[35] = new State(new int[]{23,25,21,-15,22,-15,25,-15,26,-15,3,-15,20,-15,18,-15});
-    states[36] = new State(new int[]{27,27,14,28,17,29,26,-12,3,-12,20,-12},new int[]{-11,37,-12,22,-13,35,-14,34});
-    states[37] = new State(-14);
-    states[38] = new State(-7);
-    states[39] = new State(-8);
-    states[40] = new State(new int[]{27,41});
-    states[41] = new State(new int[]{27,48,10,49,15,51},new int[]{-19,42,-20,54,-21,55});
-    states[42] = new State(new int[]{12,44,26,56},new int[]{-5,43});
-    states[43] = new State(-33);
-    states[44] = new State(new int[]{27,48,10,49,15,51},new int[]{-20,45,-21,55});
-    states[45] = new State(new int[]{11,46,12,-35,26,-35,16,-35});
-    states[46] = new State(new int[]{27,48,10,49,15,51},new int[]{-21,47});
-    states[47] = new State(-37);
-    states[48] = new State(-38);
-    states[49] = new State(new int[]{27,48,10,49,15,51},new int[]{-21,50});
-    states[50] = new State(-39);
-    states[51] = new State(new int[]{27,48,10,49,15,51},new int[]{-19,52,-20,54,-21,55});
-    states[52] = new State(new int[]{16,53,12,44});
-    states[53] = new State(-40);
-    states[54] = new State(new int[]{11,46,12,-34,26,-34,16,-34});
-    states[55] = new State(-36);
-    states[56] = new State(new int[]{26,56,27,-47,6,-47,4,-47,9,-47,20,-47,3,-47},new int[]{-5,57});
-    states[57] = new State(-48);
-    states[58] = new State(-9);
-    states[59] = new State(new int[]{27,65},new int[]{-22,60,-23,62});
-    states[60] = new State(new int[]{26,56},new int[]{-5,61});
-    states[61] = new State(-41);
-    states[62] = new State(new int[]{5,63,26,-44});
-    states[63] = new State(new int[]{27,64});
-    states[64] = new State(-43);
-    states[65] = new State(new int[]{27,65,5,-45,26,-45},new int[]{-23,66});
-    states[66] = new State(-46);
-    states[67] = new State(-10);
-    states[68] = new State(new int[]{27,65},new int[]{-22,69,-23,62});
-    states[69] = new State(new int[]{26,56},new int[]{-5,70});
-    states[70] = new State(-42);
-    states[71] = new State(new int[]{26,56},new int[]{-5,72});
-    states[72] = new State(new int[]{27,20,6,40,4,59,9,68,20,-2},new int[]{-1,73,-3,3,-4,17,-6,6,-15,7,-17,18,-7,38,-8,39,-9,58,-10,67});
-    states[73] = new State(new int[]{20,74});
-    states[74] = new State(-24);
-    states[75] = new State(new int[]{25,76,16,-30});
+    states[7] = new State(new int[]{27,8},new int[]{-22,100,-23,87});
+    states[8] = new State(new int[]{27,9,15,92,5,-47,25,-47,26,-47,3,-47,20,-47});
+    states[9] = new State(new int[]{15,10});
+    states[10] = new State(new int[]{27,76,16,-31},new int[]{-15,11,-18,72});
+    states[11] = new State(new int[]{16,12});
+    states[12] = new State(new int[]{27,71,19,-27},new int[]{-16,13,-17,69});
+    states[13] = new State(new int[]{19,14});
+    states[14] = new State(new int[]{26,67},new int[]{-5,15});
+    states[15] = new State(new int[]{4,7,9,19,27,31,6,50,20,-2},new int[]{-1,16,-3,3,-4,18,-6,6,-7,30,-8,49,-9,65,-10,66});
+    states[16] = new State(new int[]{20,17});
+    states[17] = new State(-23);
+    states[18] = new State(-4);
+    states[19] = new State(new int[]{27,20},new int[]{-22,86,-23,87});
+    states[20] = new State(new int[]{27,21,15,78,5,-47,25,-47,26,-47,3,-47,20,-47});
+    states[21] = new State(new int[]{15,22});
+    states[22] = new State(new int[]{27,76,16,-31},new int[]{-15,23,-18,72});
+    states[23] = new State(new int[]{16,24});
+    states[24] = new State(new int[]{27,71,19,-27},new int[]{-16,25,-17,69});
+    states[25] = new State(new int[]{19,26});
+    states[26] = new State(new int[]{26,67},new int[]{-5,27});
+    states[27] = new State(new int[]{4,7,9,19,27,31,6,50,20,-2},new int[]{-1,28,-3,3,-4,18,-6,6,-7,30,-8,49,-9,65,-10,66});
+    states[28] = new State(new int[]{20,29});
+    states[29] = new State(-25);
+    states[30] = new State(-7);
+    states[31] = new State(new int[]{27,39,14,40,17,41,25,-12,26,-12,3,-12,20,-12},new int[]{-11,32,-12,48,-13,47,-14,46});
+    states[32] = new State(new int[]{25,33,26,-11,3,-11,20,-11});
+    states[33] = new State(new int[]{27,39,14,40,17,41},new int[]{-12,34,-13,47,-14,46});
+    states[34] = new State(new int[]{21,35,22,44,25,-14,26,-14,3,-14,20,-14});
+    states[35] = new State(new int[]{27,39,14,40,17,41},new int[]{-13,36,-14,46});
+    states[36] = new State(new int[]{23,37,21,-16,22,-16,25,-16,26,-16,3,-16,20,-16,18,-16});
+    states[37] = new State(new int[]{27,39,14,40,17,41},new int[]{-14,38});
+    states[38] = new State(-19);
+    states[39] = new State(-20);
+    states[40] = new State(-21);
+    states[41] = new State(new int[]{27,39,14,40,17,41},new int[]{-12,42,-13,47,-14,46});
+    states[42] = new State(new int[]{18,43,21,35,22,44});
+    states[43] = new State(-22);
+    states[44] = new State(new int[]{27,39,14,40,17,41},new int[]{-13,45,-14,46});
+    states[45] = new State(new int[]{23,37,21,-17,22,-17,25,-17,26,-17,3,-17,20,-17,18,-17});
+    states[46] = new State(-18);
+    states[47] = new State(new int[]{23,37,21,-15,22,-15,25,-15,26,-15,3,-15,20,-15,18,-15});
+    states[48] = new State(new int[]{21,35,22,44,25,-13,26,-13,3,-13,20,-13});
+    states[49] = new State(-8);
+    states[50] = new State(new int[]{27,51});
+    states[51] = new State(new int[]{27,57,10,58,15,60},new int[]{-19,52,-20,63,-21,64});
+    states[52] = new State(new int[]{12,53,26,-35,3,-35,20,-35});
+    states[53] = new State(new int[]{27,57,10,58,15,60},new int[]{-20,54,-21,64});
+    states[54] = new State(new int[]{11,55,12,-37,26,-37,3,-37,20,-37,16,-37});
+    states[55] = new State(new int[]{27,57,10,58,15,60},new int[]{-21,56});
+    states[56] = new State(-39);
+    states[57] = new State(-40);
+    states[58] = new State(new int[]{27,57,10,58,15,60},new int[]{-21,59});
+    states[59] = new State(-41);
+    states[60] = new State(new int[]{27,57,10,58,15,60},new int[]{-19,61,-20,63,-21,64});
+    states[61] = new State(new int[]{16,62,12,53});
+    states[62] = new State(-42);
+    states[63] = new State(new int[]{11,55,12,-36,26,-36,3,-36,20,-36,16,-36});
+    states[64] = new State(-38);
+    states[65] = new State(-9);
+    states[66] = new State(-10);
+    states[67] = new State(new int[]{26,67,4,-49,9,-49,27,-49,6,-49,20,-49},new int[]{-5,68});
+    states[68] = new State(-50);
+    states[69] = new State(new int[]{27,70,19,-28});
+    states[70] = new State(-30);
+    states[71] = new State(-29);
+    states[72] = new State(new int[]{25,73,16,-32});
+    states[73] = new State(new int[]{27,74});
+    states[74] = new State(new int[]{27,75});
+    states[75] = new State(-34);
     states[76] = new State(new int[]{27,77});
-    states[77] = new State(new int[]{27,78});
-    states[78] = new State(-32);
-    states[79] = new State(new int[]{27,80});
-    states[80] = new State(-31);
+    states[77] = new State(-33);
+    states[78] = new State(new int[]{27,76,16,-31},new int[]{-15,79,-18,72});
+    states[79] = new State(new int[]{16,80});
+    states[80] = new State(new int[]{27,71,19,-27},new int[]{-16,81,-17,69});
+    states[81] = new State(new int[]{19,82});
+    states[82] = new State(new int[]{26,67},new int[]{-5,83});
+    states[83] = new State(new int[]{4,7,9,19,27,31,6,50,20,-2},new int[]{-1,84,-3,3,-4,18,-6,6,-7,30,-8,49,-9,65,-10,66});
+    states[84] = new State(new int[]{20,85});
+    states[85] = new State(-26);
+    states[86] = new State(-44);
+    states[87] = new State(new int[]{5,88,25,90,26,-46,3,-46,20,-46});
+    states[88] = new State(new int[]{27,89});
+    states[89] = new State(-45);
+    states[90] = new State(new int[]{27,91});
+    states[91] = new State(-48);
+    states[92] = new State(new int[]{27,76,16,-31},new int[]{-15,93,-18,72});
+    states[93] = new State(new int[]{16,94});
+    states[94] = new State(new int[]{27,71,19,-27},new int[]{-16,95,-17,69});
+    states[95] = new State(new int[]{19,96});
+    states[96] = new State(new int[]{26,67},new int[]{-5,97});
+    states[97] = new State(new int[]{4,7,9,19,27,31,6,50,20,-2},new int[]{-1,98,-3,3,-4,18,-6,6,-7,30,-8,49,-9,65,-10,66});
+    states[98] = new State(new int[]{20,99});
+    states[99] = new State(-24);
+    states[100] = new State(-43);
 
     for (int sNo = 0; sNo < states.Length; sNo++) states[sNo].number = sNo;
 
@@ -159,7 +182,7 @@ public class Parser: ShiftReduceParser<object, LexLocation>
     rules[11] = new Rule(-7, new int[]{27,-11});
     rules[12] = new Rule(-11, new int[]{});
     rules[13] = new Rule(-11, new int[]{-12});
-    rules[14] = new Rule(-11, new int[]{-12,25,-11});
+    rules[14] = new Rule(-11, new int[]{-11,25,-12});
     rules[15] = new Rule(-12, new int[]{-13});
     rules[16] = new Rule(-12, new int[]{-12,21,-13});
     rules[17] = new Rule(-12, new int[]{-12,22,-13});
@@ -168,32 +191,34 @@ public class Parser: ShiftReduceParser<object, LexLocation>
     rules[20] = new Rule(-14, new int[]{27});
     rules[21] = new Rule(-14, new int[]{14});
     rules[22] = new Rule(-14, new int[]{17,-12,18});
-    rules[23] = new Rule(-6, new int[]{-15,27,15,-16,16,27,19,-5,-1,20});
-    rules[24] = new Rule(-6, new int[]{-15,27,15,-16,16,19,-5,-1,20});
-    rules[25] = new Rule(-15, new int[]{});
-    rules[26] = new Rule(-15, new int[]{-17});
-    rules[27] = new Rule(-17, new int[]{27});
-    rules[28] = new Rule(-17, new int[]{-17,27});
-    rules[29] = new Rule(-16, new int[]{});
-    rules[30] = new Rule(-16, new int[]{-18});
-    rules[31] = new Rule(-18, new int[]{27,27});
-    rules[32] = new Rule(-18, new int[]{-18,25,27,27});
-    rules[33] = new Rule(-8, new int[]{6,27,-19,-5});
-    rules[34] = new Rule(-19, new int[]{-20});
-    rules[35] = new Rule(-19, new int[]{-19,12,-20});
-    rules[36] = new Rule(-20, new int[]{-21});
-    rules[37] = new Rule(-20, new int[]{-20,11,-21});
-    rules[38] = new Rule(-21, new int[]{27});
-    rules[39] = new Rule(-21, new int[]{10,-21});
-    rules[40] = new Rule(-21, new int[]{15,-19,16});
-    rules[41] = new Rule(-9, new int[]{4,-22,-5});
-    rules[42] = new Rule(-10, new int[]{9,-22,-5});
-    rules[43] = new Rule(-22, new int[]{-23,5,27});
-    rules[44] = new Rule(-22, new int[]{-23});
-    rules[45] = new Rule(-23, new int[]{27});
-    rules[46] = new Rule(-23, new int[]{27,-23});
-    rules[47] = new Rule(-5, new int[]{26});
-    rules[48] = new Rule(-5, new int[]{26,-5});
+    rules[23] = new Rule(-6, new int[]{4,27,27,15,-15,16,-16,19,-5,-1,20});
+    rules[24] = new Rule(-6, new int[]{4,27,15,-15,16,-16,19,-5,-1,20});
+    rules[25] = new Rule(-6, new int[]{9,27,27,15,-15,16,-16,19,-5,-1,20});
+    rules[26] = new Rule(-6, new int[]{9,27,15,-15,16,-16,19,-5,-1,20});
+    rules[27] = new Rule(-16, new int[]{});
+    rules[28] = new Rule(-16, new int[]{-17});
+    rules[29] = new Rule(-17, new int[]{27});
+    rules[30] = new Rule(-17, new int[]{-17,27});
+    rules[31] = new Rule(-15, new int[]{});
+    rules[32] = new Rule(-15, new int[]{-18});
+    rules[33] = new Rule(-18, new int[]{27,27});
+    rules[34] = new Rule(-18, new int[]{-18,25,27,27});
+    rules[35] = new Rule(-8, new int[]{6,27,-19});
+    rules[36] = new Rule(-19, new int[]{-20});
+    rules[37] = new Rule(-19, new int[]{-19,12,-20});
+    rules[38] = new Rule(-20, new int[]{-21});
+    rules[39] = new Rule(-20, new int[]{-20,11,-21});
+    rules[40] = new Rule(-21, new int[]{27});
+    rules[41] = new Rule(-21, new int[]{10,-21});
+    rules[42] = new Rule(-21, new int[]{15,-19,16});
+    rules[43] = new Rule(-9, new int[]{4,-22});
+    rules[44] = new Rule(-10, new int[]{9,-22});
+    rules[45] = new Rule(-22, new int[]{-23,5,27});
+    rules[46] = new Rule(-22, new int[]{-23});
+    rules[47] = new Rule(-23, new int[]{27});
+    rules[48] = new Rule(-23, new int[]{-23,25,27});
+    rules[49] = new Rule(-5, new int[]{26});
+    rules[50] = new Rule(-5, new int[]{26,-5});
   }
 
   protected override void Initialize() {
@@ -208,9 +233,148 @@ public class Parser: ShiftReduceParser<object, LexLocation>
 #pragma warning disable 162, 1522
     switch (action)
     {
-      case 5: // non_empty_block -> non_empty_block, new_lines, code_line
-#line 13 "asm_file.y"
-                                               {Console.Output(ValueStack[ValueStack.Depth-3]);}
+      case 6: // code_line -> function_definition
+#line 19 "asm_file.y"
+                                                                 {CurrentSemanticValue = ValueStack[ValueStack.Depth-1];}
+#line default
+        break;
+      case 7: // code_line -> function_invokation
+#line 20 "asm_file.y"
+                                                              {CurrentSemanticValue = ValueStack[ValueStack.Depth-1];}
+#line default
+        break;
+      case 8: // code_line -> rule_definitioin
+#line 21 "asm_file.y"
+                                                              {CurrentSemanticValue = ValueStack[ValueStack.Depth-1];}
+#line default
+        break;
+      case 9: // code_line -> group_definitioin
+#line 22 "asm_file.y"
+                                                              {CurrentSemanticValue = ValueStack[ValueStack.Depth-1];}
+#line default
+        break;
+      case 10: // code_line -> target_definitioin
+#line 23 "asm_file.y"
+                                                              {CurrentSemanticValue = ValueStack[ValueStack.Depth-1];}
+#line default
+        break;
+      case 13: // function_input_list -> function_input_p1
+#line 30 "asm_file.y"
+                                                              {CurrentSemanticValue = CreateList((Expr)ValueStack[ValueStack.Depth-1]);}
+#line default
+        break;
+      case 14: // function_input_list -> function_input_list, Comma, function_input_p1
+#line 31 "asm_file.y"
+                                                              {CurrentSemanticValue = AddIntoList<Expr>(ValueStack[ValueStack.Depth-3], (Expr)ValueStack[ValueStack.Depth-1]);}
+#line default
+        break;
+      case 15: // function_input_p1 -> function_input_p2
+#line 34 "asm_file.y"
+                                                                 {CurrentSemanticValue = ValueStack[ValueStack.Depth-1];}
+#line default
+        break;
+      case 18: // function_input_p2 -> function_input_p3
+#line 39 "asm_file.y"
+                                                                 {CurrentSemanticValue = ValueStack[ValueStack.Depth-1];}
+#line default
+        break;
+      case 20: // function_input_p3 -> Id
+#line 43 "asm_file.y"
+                                                                 {CurrentSemanticValue = new UdtExpr(FindType((string)ValueStack[ValueStack.Depth-1]));}
+#line default
+        break;
+      case 21: // function_input_p3 -> ImmValue
+#line 44 "asm_file.y"
+                                                              {CurrentSemanticValue = new ImmediateExpr((string)ValueStack[ValueStack.Depth-1]);}
+#line default
+        break;
+      case 23: // function_definition -> Def, Id, Id, LBracket, parameters, RBracket, group_list, 
+               //                        LCBracket, new_lines, code_block, RCBracket
+#line 48 "asm_file.y"
+                                                                                                      {Function func = new Function((string)ValueStack[ValueStack.Depth-9], ((IList<FormalParameter>)ValueStack[ValueStack.Depth-7]).ToArray(), ValueStack[ValueStack.Depth-2]); CurrentSemanticValue = func; userDefinedTypes.Pop(); functions.Pop(); DefineFunction(func);}
+#line default
+        break;
+      case 24: // function_definition -> Def, Id, LBracket, parameters, RBracket, group_list, 
+               //                        LCBracket, new_lines, code_block, RCBracket
+#line 49 "asm_file.y"
+                                                                                                      {Function func = new Function((string)ValueStack[ValueStack.Depth-8], ((IList<FormalParameter>)ValueStack[ValueStack.Depth-6]).ToArray(), ValueStack[ValueStack.Depth-1]); CurrentSemanticValue = func; userDefinedTypes.Pop(); functions.Pop(); DefineFunction(func);}
+#line default
+        break;
+      case 25: // function_definition -> Target, Id, Id, LBracket, parameters, RBracket, 
+               //                        group_list, LCBracket, new_lines, code_block, 
+               //                        RCBracket
+#line 50 "asm_file.y"
+                                                                                                      {Function func = new Function((string)ValueStack[ValueStack.Depth-9], ((IList<FormalParameter>)ValueStack[ValueStack.Depth-7]).ToArray(), ValueStack[ValueStack.Depth-2]); CurrentSemanticValue = func; userDefinedTypes.Pop(); functions.Pop(); DefineFunction(func);}
+#line default
+        break;
+      case 27: // group_list -> /* empty */
+#line 54 "asm_file.y"
+                                                                                                      {CurrentSemanticValue = Array.Empty<UserDefinedType>(); userDefinedTypes.Push(new Dictionary<string, UserDefinedType>());}
+#line default
+        break;
+      case 28: // group_list -> non_empty_group_list
+#line 55 "asm_file.y"
+                                                                                                   {CurrentSemanticValue = ValueStack[ValueStack.Depth-1]; userDefinedTypes.Push(new Dictionary<string, UserDefinedType>());}
+#line default
+        break;
+      case 29: // non_empty_group_list -> Id
+#line 58 "asm_file.y"
+                                                                                                      {CurrentSemanticValue = CreateList<UserDefinedType>(FindType((string)ValueStack[ValueStack.Depth-1]));}
+#line default
+        break;
+      case 30: // non_empty_group_list -> non_empty_group_list, Id
+#line 59 "asm_file.y"
+                                                                                                   {List<UserDefinedType> types = (List<UserDefinedType>)ValueStack[ValueStack.Depth-2]; types.Add(FindType((string)ValueStack[ValueStack.Depth-1])); CurrentSemanticValue = types;}
+#line default
+        break;
+      case 31: // parameters -> /* empty */
+#line 62 "asm_file.y"
+                                                                                                      {CurrentSemanticValue = Array.Empty<FormalParameter>();}
+#line default
+        break;
+      case 32: // parameters -> non_empty_parameters
+#line 63 "asm_file.y"
+                                                                                                   {CurrentSemanticValue = ValueStack[ValueStack.Depth-1];}
+#line default
+        break;
+      case 33: // non_empty_parameters -> Id, Id
+#line 66 "asm_file.y"
+                                                                                                      {CurrentSemanticValue = CreateList<FormalParameter>(new FormalParameter(FindType((string)ValueStack[ValueStack.Depth-2]), (string)ValueStack[ValueStack.Depth-1]));}
+#line default
+        break;
+      case 34: // non_empty_parameters -> non_empty_parameters, Comma, Id, Id
+#line 67 "asm_file.y"
+                                                                                                   {List<FormalParameter> types = (List<FormalParameter>)ValueStack[ValueStack.Depth-4]; types.Add(new FormalParameter(FindType((string)ValueStack[ValueStack.Depth-2]), (string)ValueStack[ValueStack.Depth-1])); CurrentSemanticValue = types;}
+#line default
+        break;
+      case 43: // group_definitioin -> Def, definitioin
+#line 86 "asm_file.y"
+                                                       {TypeDefinition td = (TypeDefinition)ValueStack[ValueStack.Depth-1]; DefineTypes(td.DefinedTypeNames.Select(u => new UserDefinedType(u, td.Parent, false)));}
+#line default
+        break;
+      case 44: // target_definitioin -> Target, definitioin
+#line 89 "asm_file.y"
+                                                       {TypeDefinition td = (TypeDefinition)ValueStack[ValueStack.Depth-1]; DefineTypes(td.DefinedTypeNames.Select(u => new UserDefinedType(u, td.Parent, true)));}
+#line default
+        break;
+      case 45: // definitioin -> type_list, Is, Id
+#line 92 "asm_file.y"
+                                                       {CurrentSemanticValue = new TypeDefinition((List<string>)ValueStack[ValueStack.Depth-3], FindType((string)ValueStack[ValueStack.Depth-1]));}
+#line default
+        break;
+      case 46: // definitioin -> type_list
+#line 93 "asm_file.y"
+                                                       {CurrentSemanticValue = new TypeDefinition((List<string>)ValueStack[ValueStack.Depth-1], null);}
+#line default
+        break;
+      case 47: // type_list -> Id
+#line 96 "asm_file.y"
+                                                       {CurrentSemanticValue = CreateList<string>((string)ValueStack[ValueStack.Depth-1]);}
+#line default
+        break;
+      case 48: // type_list -> type_list, Comma, Id
+#line 97 "asm_file.y"
+                                                       {CurrentSemanticValue = AddIntoList<string>(ValueStack[ValueStack.Depth-3], (string)ValueStack[ValueStack.Depth-1]);}
 #line default
         break;
     }
@@ -227,8 +391,59 @@ public class Parser: ShiftReduceParser<object, LexLocation>
         return CharToString((char)terminal);
   }
 
-#line 99 "asm_file.y"
+#line 104 "asm_file.y"
 public Parser(Stream file) : base(new Scanner(file)) { }
+
+Stack<Dictionary<string, UserDefinedType>> userDefinedTypes = new Stack<Dictionary<string, UserDefinedType>>();
+public UserDefinedType FindType(string name)
+{
+    foreach (Dictionary<string, UserDefinedType> frame in userDefinedTypes)
+    {
+        UserDefinedType type = null;
+        bool findResult = frame.TryGetValue(name, out type);
+        if (findResult)
+        {
+            return type;
+        }
+    }
+    throw new Exception("Type " + name + " not find.");
+}
+public void DefineTypes(IEnumerable<UserDefinedType> types) {
+    Dictionary<string, UserDefinedType> topFrame = userDefinedTypes.Peek();
+    foreach (UserDefinedType type in types)
+	{
+	    topFrame[type.Name] = type;
+	}
+}
+public List<T> CreateList<T>(T element) {
+    List<T> lst = new List<T>();
+	lst.Add(element);
+	return lst;
+}
+public List<T> AddIntoList<T>(object obj, T element) {
+    List<T> lst = (List<T>)obj;
+	lst.Add(element);
+	return lst;
+}
+
+Stack<Dictionary<string, Function>> functions = new Stack<Dictionary<string, Function>>();
+public Function FindFunction(string name)
+{
+    foreach (Dictionary<string, Function> frame in functions)
+    {
+        Function type = null;
+        bool findResult = frame.TryGetValue(name, out type);
+        if (findResult)
+        {
+            return type;
+        }
+    }
+    throw new Exception("Function " + name + " not find.");
+}
+public void DefineFunction(Function func) {
+    Dictionary<string, Function> topFrame = functions.Peek();
+	topFrame[func.Name] = func;
+}
 #line default
 }
 }

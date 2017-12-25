@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace asm_gen
+namespace AsmGen
 {
     enum AsmElement :
         int
@@ -72,34 +72,18 @@ namespace asm_gen
     /// </summary>
     public class AsmParser
     {
-        private CPUModel model;
-        private Regex lineRegex = new Regex("(?<instruction>\\w+)\\s+(?<operand>[^,]+)(\\s*,\\s*(?<operand>))*", RegexOptions.IgnoreCase);
-
         public void Parse(string path)
         {
-            using (TextReader reader = new StreamReader(path))
+            using (FileStream file = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
-                Parse(reader);
+                Parse(file);
             }
         }
 
-        public void Parse(TextReader reader)
+        public void Parse(FileStream file)
         {
-            string line = reader.ReadLine();
-            while (line != null)
-            {
-                ParseLine(line);
-                line = reader.ReadLine();
-            }
-        }
-
-        private void ParseLine(string line)
-        {
-            string trimedLine = line.TrimStart();
-            if (string.IsNullOrEmpty(trimedLine) || trimedLine[0] == ';')
-            {
-                return;
-            }
+            Parser parser = new Parser(file);
+            parser.Parse();
         }
     }
 }

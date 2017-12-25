@@ -14,7 +14,7 @@ target                    return (int)Tokens.Target;
 \&                        return (int)Tokens.And;
 \|                        return (int)Tokens.Or;
 imm                       return (int)Tokens.Imm;
-{base16}|{base10}|{base2} return (int)Tokens.ImmValue;
+{base16}|{base10}|{base2} yylval=yytext; return (int)Tokens.ImmValue;
 \(                        return (int)Tokens.LBracket;
 \)                        return (int)Tokens.RBracket;
 \[                        return (int)Tokens.LSBracket;
@@ -28,5 +28,5 @@ imm                       return (int)Tokens.Imm;
 ,                         return (int)Tokens.Comma;
 \n                        return (int)Tokens.NewLine;
 [:IsWhiteSpace:]          continue;
-[a-z][a-z0-9]*            return (int)Tokens.Id;
+[a-z][a-z0-9]*            yylval=yytext; return (int)Tokens.Id;
 %%

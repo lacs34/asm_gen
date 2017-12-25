@@ -4,8 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace asm_gen
+namespace AsmGen
 {
+    internal class TypeDefinition
+    {
+        private List<string> definedTypeNames;
+        public List<string> DefinedTypeNames { get => definedTypeNames; set => definedTypeNames = value; }
+
+        private UserDefinedType parent;
+        public UserDefinedType Parent { get => parent; set => parent = value; }
+
+        internal TypeDefinition(List<string> names, UserDefinedType parent)
+        {
+            DefinedTypeNames = names;
+            Parent = parent;
+        }
+    }
+
     public class UserDefinedType
     {
         private string name;
@@ -27,21 +42,6 @@ namespace asm_gen
             Name = name;
             ParentType = parent;
             IsTargetType = isTarget;
-        }
-    }
-
-    public class FormalParameter
-    {
-        private UserDefinedType parameterType;
-        public UserDefinedType ParameterType { get => parameterType; set => parameterType = value; }
-
-        private string parameterName;
-        public string ParameterName { get => parameterName; set => parameterName = value; }
-
-        public FormalParameter(UserDefinedType type, string name)
-        {
-            ParameterType = type;
-            ParameterName = name;
         }
     }
 
