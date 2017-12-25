@@ -33,10 +33,10 @@ namespace AsmGen
         private UserDefinedType[] functionTypes;
         public UserDefinedType[] FunctionTypes { get => functionTypes; set => functionTypes = value; }
 
-        private object body;
-        public object Body { get => body; set => body = value; }
+        private Invocation[] body;
+        public Invocation[] Body { get => body; set => body = value; }
 
-        public Function(string name, FormalParameter[] parameters, object body)
+        public Function(string name, FormalParameter[] parameters, Invocation[] body)
             : base(name, CodeType)
         {
             //Signature = signature;
@@ -60,9 +60,22 @@ namespace AsmGen
         }
     }
 
-    public abstract class Expr
+    public class RuleContext
     {
 
+    }
+
+    public interface Rule
+    {
+        bool Verify(RuleContext context);
+    }
+
+    public interface Expr
+    {
+        UserDefinedType GetExprType();
+        bool IsTarget();
+        IEnumerable<Expr> ReplacableTarget();
+        Rule AssociatedRule();
     }
 
     public interface ImmediateExpression
@@ -83,15 +96,24 @@ namespace AsmGen
         {
 
         }
+
+        public UserDefinedType GetExprType()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class UdtExpr
         : Expr
     {
-
         public UdtExpr(UserDefinedType udt)
         {
 
+        }
+
+        public UserDefinedType GetExprType()
+        {
+            throw new NotImplementedException();
         }
     }
 }

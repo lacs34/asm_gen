@@ -23,7 +23,7 @@ code_line
 	| target_definitioin                                         {$$ = $1;}
 	;
 function_invokation
-    : Id function_input_list
+    : Id function_input_list                                     { $$ = new Invocation(FindFunction((string)$1, ));}
 	;
 function_input_list
     :
@@ -136,7 +136,7 @@ public List<T> AddIntoList<T>(object obj, T element) {
 }
 
 Stack<Dictionary<string, Function>> functions = new Stack<Dictionary<string, Function>>();
-public Function FindFunction(string name)
+public Function FindFunction(string name, UserDefinedType[] parameters)
 {
     foreach (Dictionary<string, Function> frame in functions)
     {
