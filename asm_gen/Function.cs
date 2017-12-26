@@ -23,6 +23,33 @@ namespace AsmGen
         }
     }
 
+    public class CodeBlockCollector
+    {
+        public CodeBlockCollector Clone()
+        {
+            return this;
+        }
+        public void Add(ResolvedInvocation ri)
+        {
+
+        }
+    }
+
+    public class InstantiateParam
+    {
+        private RuleContext context;
+        public RuleContext Context { get => context; set => context = value; }
+
+        private CodeBlockCollector codeBlock;
+        public CodeBlockCollector CodeBlock { get => codeBlock; set => codeBlock = value; }
+
+    }
+
+    public interface RuleContextUpdater
+    {
+        RuleContext UpdateContext(RuleContext context);
+    }
+
     public class Function
         : UserDefinedType
     {
@@ -36,6 +63,11 @@ namespace AsmGen
         private Invocation[] body;
         public Invocation[] Body { get => body; set => body = value; }
 
+        private Rule precondition;
+        private RuleContextUpdater preUpdater;
+        private RuleContextUpdater innerUpdater;
+        private RuleContextUpdater postUpdater;
+
         public Function(string name, FormalParameter[] parameters, Invocation[] body)
             : base(name, CodeType)
         {
@@ -43,26 +75,87 @@ namespace AsmGen
             //FunctionTypes = definedTypes;
             Body = body;
         }
+
+        public bool Verify(RuleContext context)
+        {
+
+        }
+
+        public bool TryInstantiate(InstantiateParam parameter)
+        {
+            if (!precondition.Verify(parameter.Context))
+            {
+                return false;
+            }
+            RuleContext context = preUpdater.UpdateContext(parameter.Context);
+            InstantiateParam innerParameter = new InstantiateParam() { CodeBlock = parameter.CodeBlock, Context = context };
+            foreach (Invocation i in Body)
+            {
+                bool innerInstantiateResult = i.TryInstantiate(innerParameter);
+                if (!innerInstantiateResult)
+                {
+                    return false;
+                }
+            }
+            parameter.CodeBlock = innerParameter.CodeBlock;
+            parameter.Context = postUpdater.UpdateContext(innerParameter.Context);
+            return true;
+        }
     }
 
-    public class Invocation
+    public class FunctionResolveScope
     {
-        private Function invokedFunction;
-        public Function InvokedFunction { get => invokedFunction; set => invokedFunction = value; }
+        private IEnumerable<Function> FindFunctions(string name, int paramCount)
+        {
+            return null;
+        }
+
+        private 
+        public Function FindFunction(string name, Expr[] parameters, RuleContext context)
+        {
+            return null;
+        }
+    }
+
+    public class ResolvedInvocation
+    {
+        private Function function;
+        public Function InvokedFunction { get => function; set => function = value; }
 
         private Expr[] actualParameters;
         public Expr[] ActualParameters { get => actualParameters; set => actualParameters = value; }
 
-        public Invocation(Function func, Expr[] parameters)
+
+    }
+
+    public class Invocation
+    {
+        private FunctionResolveScope scope;
+        private string functionName;
+        public string FunctionName { get => functionName; set => functionName = value; }
+
+        private Expr[] actualParameters;
+        public Expr[] ActualParameters { get => actualParameters; set => actualParameters = value; }
+
+        public Invocation(string func, Expr[] parameters)
         {
-            InvokedFunction = func;
+            FunctionName = func;
             ActualParameters = parameters;
+        }
+
+        public bool TryInstantiate(InstantiateParam parameter)
+        {
+            Function func = FindMostSuitableFunction(scope.FindFunctions(functionName).Where(f => f.Signature.Parameters.Length == actualParameters.Length), parameter.Context);
+            return func.TryInstantiate(parameter);
         }
     }
 
     public class RuleContext
     {
-
+        RuleContext Clone()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public interface Rule
@@ -101,17 +194,48 @@ namespace AsmGen
         {
             throw new NotImplementedException();
         }
+
+        public bool IsTarget()
+        {
+            return true;
+        }
+
+        public IEnumerable<Expr> ReplacableTarget()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Rule AssociatedRule()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class UdtExpr
         : Expr
     {
+        private UserDefinedType type;
         public UdtExpr(UserDefinedType udt)
         {
+            type = udt;
+        }
 
+        public Rule AssociatedRule()
+        {
+            throw new NotImplementedException();
         }
 
         public UserDefinedType GetExprType()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsTarget()
+        {
+            return type.IsTargetType;
+        }
+
+        public IEnumerable<Expr> ReplacableTarget()
         {
             throw new NotImplementedException();
         }

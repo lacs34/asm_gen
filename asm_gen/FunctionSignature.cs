@@ -50,12 +50,12 @@ namespace AsmGen
         private string name;
         public string Name { get => name; set => name = value; }
         private UserDefinedType[] parameterNames;
-        public UserDefinedType[] ParameterNames { get => parameterNames; set => parameterNames = value; }
+        public UserDefinedType[] Parameters { get => parameterNames; set => parameterNames = value; }
         
         public FunctionSignature(string name , UserDefinedType[] parameters)
         {
             Name = name;
-            ParameterNames = parameters;
+            Parameters = parameters;
         }
         
         public override bool Equals(object obj)
@@ -65,13 +65,13 @@ namespace AsmGen
             {
                 return false;
             }
-            if (another.Name != Name || another.ParameterNames.Length != ParameterNames.Length)
+            if (another.Name != Name || another.Parameters.Length != Parameters.Length)
             {
                 return false;
             }
-            for (int i = 0; i < ParameterNames.Length; ++i)
+            for (int i = 0; i < Parameters.Length; ++i)
             {
-                if (another.ParameterNames[i] != ParameterNames[i])
+                if (another.Parameters[i] != Parameters[i])
                 {
                     return false;
                 }
@@ -81,7 +81,7 @@ namespace AsmGen
 
         public override int GetHashCode()
         {
-            return ParameterNames.Aggregate(Name.GetHashCode(), (hash, p) => hash ^ p.GetHashCode());
+            return Parameters.Aggregate(Name.GetHashCode(), (hash, p) => hash ^ p.GetHashCode());
         }
     }
 }
