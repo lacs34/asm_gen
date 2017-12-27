@@ -101,9 +101,13 @@ new_lines
     | NewLine new_lines
 	;
 %%
-public Parser(Stream file) : base(new Scanner(file)) { }
+public Parser(Stream file, ParseContext context)
+    : base(new Scanner(file))
+{
+    this.context = context;
+}
 
-Stack<Dictionary<string, UserDefinedType>> userDefinedTypes = new Stack<Dictionary<string, UserDefinedType>>();
+private ParseContext context;
 public UserDefinedType FindType(string name)
 {
     foreach (Dictionary<string, UserDefinedType> frame in userDefinedTypes)

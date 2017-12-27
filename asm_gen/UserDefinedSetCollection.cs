@@ -46,6 +46,11 @@ namespace asm_gen
 
         private BitArray collection;
 
+        private UserDefinedSetCollection(BitArray c)
+        {
+            collection = c;
+        }
+
         public UserDefinedSetCollection(int element)
         {
             collection = new BitArray(200);
@@ -86,6 +91,56 @@ namespace asm_gen
                 --level;
             }*/
             return (new BitArray(collection)).Not().And(included.collection).OfType<bool>().All(u => !u);
+        }
+
+        public bool ProperlyInclude(UserDefinedSetCollection included)
+        {
+            return (new BitArray(collection)).Not().And(included.collection).OfType<bool>().All(u => !u);
+        }
+
+        public void Expend(UserDefinedSetCollection another)
+        {
+            collection.Or(another.collection);
+        }
+
+        public UserDefinedSetCollection Intersect(UserDefinedSetCollection another)
+        {
+            return new UserDefinedSetCollection((new BitArray(collection)).And(another.collection));
+        }
+
+        public UserDefinedSetCollection Union(UserDefinedSetCollection another)
+        {
+            return new UserDefinedSetCollection((new BitArray(collection)).Or(another.collection));
+        }
+
+        public UserDefinedSetCollection Sub(UserDefinedSetCollection another)
+        {
+            return new UserDefinedSetCollection(new BitArray(another.collection).Not().And(collection));
+        }
+    }
+
+    public class ParseContext
+    {
+        private Dictionary<string, UserDefinedSetCollection> defindedSets = new Dictionary<string, UserDefinedSetCollection>();
+        private List<string> elements = new List<string>();
+
+        private UserDefinedSetCollection CreateNewSet(string name)
+        {
+            UserDefinedSetCollection created = new UserDefinedSetCollection(elements.Count);
+            elements.Add(name);
+            return created;
+        }
+
+        public UserDefinedSetCollection FindSet(string name)
+        {
+            UserDefinedSetCollection set = null;
+            bool exist = defindedSets.TryGetValue(name, out set);
+            if (!exist)
+            {
+                set = CreateNewSet(name);
+                defindedSets.Add(name, set);
+            }
+            return set;
         }
     }
 }

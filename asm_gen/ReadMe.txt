@@ -2,13 +2,8 @@
 def gp8x32 is reg
 def gp16x32 is reg
 
-def arch
-def __any is arch
-def __x32 is __any
-def __x64 is __any
-target al,bl,cl,dl,ah,bh,ch,dh is gp8x32
-target ax,bx,cx,dx,si,di,sp,bp is gp16x32
-
+def arch is __x32 | __x64
+def gp8x32 is al | bl | cl | dl | ah | bh | ch | dh
 def mem
 
 rule __x32 !__x64
